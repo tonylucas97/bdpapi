@@ -152,7 +152,11 @@ Router.delete("/:id", async (req, res) => {
         if (mercadoria.nomeImg) {
             var params = {
                 Bucket: "baldosplasticosimgs",
-                Key: mercadoria.nomeImg
+                Key: mercadoria.nomeImg,
+                accessKeyId: "AKIA3TQRZUHFCCMBYTNT",
+                secretAccessKey: "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",
+                region: "us-east-1"
+
             };
             s3.deleteObject(params, function (err, data) {
                 if (err) console.log(err, err.stack); // an error occurred
