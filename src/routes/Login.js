@@ -2,6 +2,7 @@
 const express = require("express")
 const Router = express.Router()
 const Admin = require('../models/Admin');
+const Usuario = require("../models/Usuario");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -12,7 +13,7 @@ Router.post("/", async (req, res) => {
             const isPassword = bcrypt.compareSync(req.body.senha, admin.senha);
             if (isPassword) {
                 const token = jwt.sign({ id: admin.id, usuario: admin.usuario }, process.env.SECRET_KEY, { expiresIn: '24h' });
-                res.json({ id: admin.id, token: token, success: true,admin:admin.nome });
+                res.json({ id: admin.id, token: token, success: true, admin: admin.nome });
             } else {
                 res.json({ message: 'Senha invalida', success: false })
             }
@@ -23,5 +24,20 @@ Router.post("/", async (req, res) => {
         res.json({ message: error.message });
     }
 });
+
+Router.post("/userauth", async (req, res) => {
+    const usuario = await Usuario.findOne({ where: { email: req.body.email } })
+    if (usuario) {
+        const isPassword = bcrypt.compareSync(req.body.senha, usuario.senha)
+        if (isPassword) {
+            const token = jwt.sign({ id: usuario.id, email: usuario.email }, process.env.SECRET_KEY_USER, { expiresIn: '24h' });
+            res.json({ id: usuario.id, token: token, success: true, usuario: usuario.nome })
+        } else {
+            res.json({ message: 'Senha Incorreta', success: false })
+        }
+    }else{
+        res.json({ message: 'Usuario nao esta cadastrado', success: false })
+    }
+})
 
 module.exports = Router;

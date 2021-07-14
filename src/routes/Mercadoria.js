@@ -111,14 +111,11 @@ Router.post("/alterarItem", upload.single("img"), async (req, res) => {
     if (req.file) {
         const mercadoria = await Mercadoria.findOne({ where: { id: req.body.id } });
         if (mercadoria) {
-            if (mercadoria.nomeImg) {
-                fs.unlinkSync("uploads/" + mercadoria.nomeImg)
-            }
             const mercadoriaUpdate = await mercadoria.update({
                 nome: req.body.nome,
                 precoCompra: req.body.precoCompra,
                 precoVenda: req.body.precoVenda,
-                nomeImg: req.file.filename
+                nomeImg: req.file.originalname
             })
             if (mercadoriaUpdate) {
                 res.json({ success: true, message: "Item alterado com sucesso" })
@@ -153,9 +150,6 @@ Router.delete("/:id", async (req, res) => {
             var params = {
                 Bucket: "baldosplasticosimgs",
                 Key: mercadoria.nomeImg,
-                accessKeyId: "AKIA3TQRZUHFCCMBYTNT",
-                secretAccessKey: "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",
-                region: "us-east-1"
 
             };
             s3.deleteObject(params, function (err, data) {
@@ -165,7 +159,7 @@ Router.delete("/:id", async (req, res) => {
                 data = {
                 }
                 */
-            });
+            });s
         }
         const deleteMercadoria = await Mercadoria.destroy({ where: { id: req.params.id } });
         if (deleteMercadoria) {
