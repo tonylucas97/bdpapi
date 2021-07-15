@@ -3,6 +3,7 @@ const express = require("express");
 const Router = express.Router();
 const Admin = require("../models/Admin");
 const bcrypt = require("bcrypt");
+const autenticacao = require("../config/Autenticacao");
 
 Router.post("/", async (req, res) => {
     const adminCheck = await Admin.findOne({ where: { usuario: req.body.usuario } });
@@ -19,12 +20,12 @@ Router.post("/", async (req, res) => {
     }
 })
 
-Router.get("/", async (req, res) => {
+Router.get("/", autenticacao ,async (req, res) => {
     const admins = await Admin.findAll();
     res.json({ success: true, admins: admins })
 })
 
-Router.get("/:id", async (req, res) => {
+Router.get("/:id", autenticacao ,async (req, res) => {
     const admin = await Admin.findOne({ where: { id: req.params.id } })
     res.json({ success: true, admin: admin })
 })

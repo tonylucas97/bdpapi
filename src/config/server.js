@@ -13,6 +13,8 @@ const loginRoute = require("../routes/Login");
 const notasRoutes = require("../routes/Nota");
 const vendasRoutes = require("../routes/Venda");
 const usuarioRoutes = require("../routes/Usuario");
+const contatoRoute = require("../routes/Contato")
+const enderecoRoutes = require("../routes/Endereco")
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -23,4 +25,7 @@ app.use("/login", loginRoute)
 app.use("/notas", notasRoutes)
 app.use("/vendas", vendasRoutes)
 app.use("/usuario", usuarioRoutes)
+app.use("/usuariocontato",contatoRoute)
+app.use("/endereco",enderecoRoutes)
+
 app.listen(process.env.PORT || 3333);

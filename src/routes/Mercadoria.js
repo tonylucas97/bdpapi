@@ -2,6 +2,7 @@ const express = require("express");
 const Router = express.Router();
 const Mercadoria = require("../models/Mercadoria");
 const autenticacao = require("../config/Autenticacao");
+const authUser = require("../config/AuthUsuario");
 const sequelize = require("../config/database");
 const { QueryTypes } = require('sequelize');
 const Sequelize = require('sequelize');
@@ -39,7 +40,7 @@ Router.get("/", async (req, res) => {
     res.json({ success: true, mercadorias: mercadorias })
 })
 
-Router.get('/busca/:nome/:token', autenticacao, async (req, res) => {
+Router.get('/busca/:nome/:token', authUser || autenticacao, async (req, res) => {
     try {
         const mercadoria = await Mercadoria.findAll({ where: { nome: { [Op.like]: req.params.nome + '%' } } });
         res.json({ mercadorias: mercadoria, success: true })
@@ -48,7 +49,7 @@ Router.get('/busca/:nome/:token', autenticacao, async (req, res) => {
     }
 })
 
-Router.get("/porid", async (req, res) => {
+Router.get("/porid", authUser || autenticacao, async (req, res) => {
     try {
         const mercadoria = await Mercadoria.findOne({ where: { id: req.query.id } });
         if (mercadoria) {
@@ -61,7 +62,7 @@ Router.get("/porid", async (req, res) => {
     }
 })
 
-Router.get("/porcodigolike", async (req, res) => {
+Router.get("/porcodigolike", authUser || autenticacao, async (req, res) => {
     try {
         const mercadoria = await Mercadoria.findAll({ where: { codigoBarras: { [Op.like]: req.query.codigoBarras + '%' } } })
         if (mercadoria) {
@@ -103,11 +104,7 @@ Router.post("/", upload.single("img"), async (req, res) => {
 
 })
 
-Router.post("/Addphoto", upload.single("img"), async (req, res) => {
-    console.log(req.file)
-})
-
-Router.post("/alterarItem", upload.single("img"), async (req, res) => {
+Router.post("/alterarItem", autenticacao, upload.single("img"), async (req, res) => {
     if (req.file) {
         const mercadoria = await Mercadoria.findOne({ where: { id: req.body.id } });
         if (mercadoria) {
@@ -143,7 +140,7 @@ Router.post("/alterarItem", upload.single("img"), async (req, res) => {
     }
 })
 
-Router.delete("/:id", async (req, res) => {
+Router.delete("/:id", autenticacao, async (req, res) => {
     const mercadoria = await Mercadoria.findOne({ where: { id: req.params.id } });
     if (mercadoria) {
         if (mercadoria.nomeImg) {
@@ -159,7 +156,7 @@ Router.delete("/:id", async (req, res) => {
                 data = {
                 }
                 */
-            });s
+            }); s
         }
         const deleteMercadoria = await Mercadoria.destroy({ where: { id: req.params.id } });
         if (deleteMercadoria) {

@@ -16,7 +16,7 @@ Router.get("/:id", autenticacao, async (req, res) => {
     }
 })
 
-Router.post("/cadastro", autenticacao, async (req, res) => {
+Router.post("/cadastro", async (req, res) => {
     const usuario = await Usuario.findOne({ where: { email: req.body.email } });
     if(usuario){
         res.json({success:false,message:"Usuario ja cadastrado!"})

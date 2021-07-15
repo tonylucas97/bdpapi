@@ -4,7 +4,7 @@ const Mercadoria = require("./Mercadoria");
 const Nota = require("./Nota");
 const Venda = require("./Venda");
 const Usuario = require("./Usuario");
-const EnderecoEntrega = require("./EnderecoEntrega")
+const Endereco = require("./Endereco")
 const Contato = require("./Contato");
 
 Admin.hasMany(Nota);
@@ -13,8 +13,8 @@ Nota.hasMany(Venda);
 Venda.belongsTo(Nota);
 Mercadoria.hasMany(Venda);
 Venda.belongsTo(Mercadoria);
-Usuario.hasOne(EnderecoEntrega)
-EnderecoEntrega.belongsTo(Usuario)
+Usuario.hasMany(Endereco)
+Endereco.belongsTo(Usuario)
 Usuario.hasMany(Contato)
 Contato.belongsTo(Usuario)
 
