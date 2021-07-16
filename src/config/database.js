@@ -1,5 +1,5 @@
 const Sequelize = require("sequelize");
-const sequelize = new Sequelize("heroku_e731d5877c22f27","bb40e74f3e6d82","0c091767",{
+const sequelize = new Sequelize("heroku_d2625a7e5a9dafb","b2408d93b0076d","174e3a1b",{
     host:"us-cdbr-east-04.cleardb.com",
     dialect:"mysql",
     raw:true,

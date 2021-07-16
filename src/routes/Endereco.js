@@ -28,7 +28,18 @@ Router.post("/", authUser || autenticacao, async (req, res) => {
 })
 
 Router.post("/alteraendereco", autenticacao || authUser, async (req, res) => {
-
+    const endereco = await Endereco.findOne({ where: { id: req.body.id } });
+    if (endereco) {
+        const enderecoUpdate = await endereco.update({
+            logradouro: req.body.logradouro, bairro: req.body.bairro, cidade: req.body.cidade,
+            estado: req.body.estado, referencia: req.body.referencia, descricaoEntrega: req.body.descricaoEntrega
+        })
+        if (enderecoUpdate) {
+            res.json({ success: true, endereco: enderecoUpdate })
+        } else {
+            res.json({ success: false, message: "Ocorreu um erro" })
+        }
+    }
 })
 
 module.exports = Router;

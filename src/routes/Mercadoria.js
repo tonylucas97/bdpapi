@@ -14,15 +14,15 @@ var multer = require('multer')
 const fs = require("fs")
 
 var s3 = new aws.S3({
-    accessKeyId: "AKIA3TQRZUHFCCMBYTNT",
-    secretAccessKey: "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",
-    region: "us-east-1"
+    accessKeyId: "AKIAZKUNCRPIK4FMD2TD",
+    secretAccessKey: "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",
+    region: "sa-east-1"
 })
 
 var upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'baldosplasticosimgs',
+        bucket: 'baldosplasticosimgss',
         acl: 'public-read',
         metadata: function (req, file, cb) {
             cb(null, { fieldName: file.fieldname });
@@ -145,18 +145,15 @@ Router.delete("/:id", autenticacao, async (req, res) => {
     if (mercadoria) {
         if (mercadoria.nomeImg) {
             var params = {
-                Bucket: "baldosplasticosimgs",
+                Bucket: "baldosplasticosimgss",
                 Key: mercadoria.nomeImg,
 
             };
             s3.deleteObject(params, function (err, data) {
                 if (err) console.log(err, err.stack); // an error occurred
                 else console.log(data);           // successful response
-                /*
-                data = {
-                }
-                */
-            }); s
+                
+            }); 
         }
         const deleteMercadoria = await Mercadoria.destroy({ where: { id: req.params.id } });
         if (deleteMercadoria) {
