@@ -5,7 +5,7 @@ const autenticacao = require("../config/Autenticacao");
 const sequelize = require("../config/database");
 const { QueryTypes } = require('sequelize');
 const Sequelize = require('sequelize');
-
+const bcrypt = require("bcrypt");
 
 Router.get("/:id", autenticacao, async (req, res) => {
     const usuarios = await Usuario.findOne({ where: { id: req.params.id } });
